@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Categorías — Ventorrillo Canario{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="page-header">
+    <h2><i class="bi bi-tag me-2" style="color:#c8a96e"></i>Categorías</h2>
+    <a href="{{ url_for('nueva_categoria') }}" class="btn-acento">
+      <i class="bi bi-plus-lg"></i> Nueva categoría
+    </a>
+  </div>
+  <div class="tabla-container">
+    <table class="table table-hover">
+      <thead>
+        <tr><th>#</th><th>Nombre</th><th>Acciones</th></tr>
+      </thead>
+      <tbody>
+        {% for c in categorias %}
+        <tr>
+          <td>{{ c['Id_categoría'] }}</td>
+          <td><strong>{{ c['Nombre'] }}</strong></td>
+          <td style="display:flex; gap:6px;">
+            <a href="{{ url_for('editar_categoria', id=c['Id_categoría']) }}" class="btn-editar">
+              <i class="bi bi-pencil"></i> Editar
+            </a>
+            <a href="{{ url_for('eliminar_categoria', id=c['Id_categoría']) }}" class="btn-eliminar"
+               onclick="return confirm('¿Eliminar esta categoría?')">
+              <i class="bi bi-trash"></i> Eliminar
+            </a>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="3" class="text-center text-muted py-4">No hay categorías</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

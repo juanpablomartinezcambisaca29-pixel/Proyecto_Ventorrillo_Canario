@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}Pedidos — Ventorrillo Canario{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="page-header">
+    <h2><i class="bi bi-receipt me-2" style="color:#c8a96e"></i>Pedidos</h2>
+    <a href="{{ url_for('nuevo_pedido') }}" class="btn-acento">
+      <i class="bi bi-plus-lg"></i> Nuevo pedido
+    </a>
+  </div>
+  <div class="tabla-container">
+    <table class="table table-hover">
+      <thead>
+        <tr><th>#</th><th>Mesa</th><th>Fecha</th><th>Estado</th><th>Acciones</th></tr>
+      </thead>
+      <tbody>
+        {% for p in pedidos %}
+        <tr>
+          <td>{{ p['Id_pedido'] }}</td>
+          <td>Mesa {{ p['Número_mesa'] or '—' }}</td>
+          <td>{{ p['Fecha_pedido'] or '—' }}</td>
+          <td>
+            <span class="badge-estado badge-{{ p['Estado']|lower }}">{{ p['Estado'] }}</span>
+          </td>
+          <td style="display:flex; gap:6px;">
+            <a href="{{ url_for('editar_pedido', id=p['Id_pedido']) }}" class="btn-editar">
+              <i class="bi bi-pencil"></i> Editar
+            </a>
+            <a href="{{ url_for('eliminar_pedido', id=p['Id_pedido']) }}" class="btn-eliminar"
+               onclick="return confirm('¿Eliminar este pedido?')">
+              <i class="bi bi-trash"></i> Eliminar
+            </a>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5" class="text-center text-muted py-4">No hay pedidos</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

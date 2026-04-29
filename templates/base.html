@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Ventorrillo Canario{% endblock %}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --blanco: #f8f7f4;
+      --gris-claro: #e8e6e1;
+      --gris-medio: #5a5a5a;
+      --gris-oscuro: #1e1e1e;
+      --gris-card: #2a2a2a;
+      --acento: #c8a96e;
+      --acento-hover: #b8944f;
+      --peligro: #e05c5c;
+      --exito: #5cb85c;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: var(--blanco);
+      color: var(--gris-oscuro);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Playfair Display', serif;
+    }
+
+    /* ── NAVBAR ── */
+    .navbar {
+      background-color: var(--gris-oscuro) !important;
+      padding: 12px 24px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.3);
+    }
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .navbar-brand img {
+      height: 46px;
+      width: 46px;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    .navbar-brand span {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      color: var(--acento);
+      letter-spacing: 0.03em;
+    }
+
+    .navbar-nav .nav-link {
+      color: #ccc !important;
+      font-size: 0.9rem;
+      font-weight: 400;
+      padding: 8px 14px !important;
+      border-radius: 6px;
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .navbar-nav .nav-link:hover,
+    .navbar-nav .nav-link.active {
+      color: var(--acento) !important;
+      background-color: rgba(200, 169, 110, 0.1);
+    }
+
+    .navbar-toggler {
+      border-color: rgba(200,169,110,0.4);
+    }
+    .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(200, 169, 110, 0.9)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+
+    /* ── HERO (solo index) ── */
+    .hero-section {
+      position: relative;
+      min-height: 420px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background-color: var(--gris-oscuro);
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('/static/img/logo.png');
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0.08;
+      transform: scale(1.05);
+    }
+
+    .hero-content {
+      position: relative;
+      text-align: center;
+      padding: 60px 24px;
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .hero-content h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      color: var(--blanco);
+      margin-bottom: 12px;
+    }
+
+    .hero-content p {
+      color: var(--acento);
+      font-size: 1.1rem;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── CONTENIDO ── */
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 28px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid var(--gris-claro);
+    }
+
+    .page-header h2 {
+      font-size: 1.8rem;
+      color: var(--gris-oscuro);
+    }
+
+    main {
+      flex: 1;
+      padding: 36px 0;
+    }
+
+    /* ── TARJETAS STATS ── */
+    .stat-card {
+      background: var(--gris-oscuro);
+      border-radius: 16px;
+      padding: 28px 24px;
+      color: var(--blanco);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+    }
+
+    .stat-card .stat-icon {
+      font-size: 2rem;
+      color: var(--acento);
+      margin-bottom: 12px;
+    }
+
+    .stat-card .stat-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      color: var(--acento);
+      line-height: 1;
+    }
+
+    .stat-card .stat-label {
+      font-size: 0.85rem;
+      color: #aaa;
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* ── TABLA ── */
+    .tabla-container {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.07);
+      overflow: hidden;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    .table {
+      margin: 0;
+    }
+
+    .table thead {
+      background-color: var(--gris-oscuro);
+      color: var(--acento);
+    }
+
+    .table thead th {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 14px 18px;
+      border: none;
+    }
+
+    .table tbody tr {
+      transition: background 0.2s ease;
+    }
+
+    .table tbody tr:hover {
+      background-color: #f5f3ee;
+    }
+
+    .table tbody td {
+      padding: 13px 18px;
+      vertical-align: middle;
+      font-size: 0.92rem;
+      border-color: var(--gris-claro);
+    }
+
+    /* ── BOTONES ── */
+    .btn-acento {
+      background-color: var(--acento);
+      color: #fff;
+      border: none;
+      padding: 9px 20px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: all 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-acento:hover {
+      background-color: var(--acento-hover);
+      color: #fff;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(200,169,110,0.35);
+    }
+
+    .btn-editar {
+      background: transparent;
+      border: 1.5px solid var(--gris-oscuro);
+      color: var(--gris-oscuro);
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .btn-editar:hover {
+      background: var(--gris-oscuro);
+      color: var(--acento);
+    }
+
+    .btn-eliminar {
+      background: transparent;
+      border: 1.5px solid var(--peligro);
+      color: var(--peligro);
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      text-decoration: none;
+    }
+
+    .btn-eliminar:hover {
+      background: var(--peligro);
+      color: #fff;
+    }
+
+    /* ── FORMULARIOS ── */
+    .form-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 36px;
+      box-shadow: 0 2px 24px rgba(0,0,0,0.08);
+      max-width: 620px;
+      margin: 0 auto;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    .form-label {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--gris-medio);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 6px;
+    }
+
+    .form-control, .form-select {
+      border: 1.5px solid var(--gris-claro);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 0.93rem;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .form-control:focus, .form-select:focus {
+      border-color: var(--acento);
+      box-shadow: 0 0 0 3px rgba(200,169,110,0.15);
+      outline: none;
+    }
+
+    /* ── BADGE ESTADO ── */
+    .badge-estado {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 500;
+    }
+
+    .badge-libre    { background: #e8f5e9; color: #2e7d32; }
+    .badge-ocupada  { background: #fff3e0; color: #e65100; }
+    .badge-reservada{ background: #e3f2fd; color: #1565c0; }
+    .badge-pendiente{ background: #fff9c4; color: #856404; }
+    .badge-entregado{ background: #e8f5e9; color: #2e7d32; }
+    .badge-cancelado{ background: #ffebee; color: #c62828; }
+    .badge-si       { background: #e8f5e9; color: #2e7d32; }
+    .badge-no       { background: #ffebee; color: #c62828; }
+
+    /* ── ALERTS ── */
+    .alert {
+      border: none;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      animation: fadeUp 0.4s ease both;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--gris-oscuro);
+      color: #888;
+      text-align: center;
+      padding: 18px;
+      font-size: 0.8rem;
+      margin-top: auto;
+    }
+
+    footer span { color: var(--acento); }
+
+    /* ── ANIMACIONES ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in { animation: fadeUp 0.5s ease both; }
+
+    /* Stagger para filas de tabla */
+    .tabla-container tbody tr:nth-child(1)  { animation: fadeUp 0.4s ease 0.05s both; }
+    .tabla-container tbody tr:nth-child(2)  { animation: fadeUp 0.4s ease 0.10s both; }
+    .tabla-container tbody tr:nth-child(3)  { animation: fadeUp 0.4s ease 0.15s both; }
+    .tabla-container tbody tr:nth-child(4)  { animation: fadeUp 0.4s ease 0.20s both; }
+    .tabla-container tbody tr:nth-child(5)  { animation: fadeUp 0.4s ease 0.25s both; }
+    .tabla-container tbody tr:nth-child(n+6){ animation: fadeUp 0.4s ease 0.30s both; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .form-card { padding: 24px 18px; }
+      .hero-content h1 { font-size: 1.8rem; }
+      .stat-card { margin-bottom: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand" href="{{ url_for('index') }}">
+      <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo Ventorrillo Canario">
+      <span>Ventorrillo Canario</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto gap-1">
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'categorias' %}active{% endif %}" href="{{ url_for('categorias') }}">
+            <i class="bi bi-tag"></i> Categorías
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'platos' %}active{% endif %}" href="{{ url_for('platos') }}">
+            <i class="bi bi-egg-fried"></i> Platos
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'mesas' %}active{% endif %}" href="{{ url_for('mesas') }}">
+            <i class="bi bi-grid-3x3"></i> Mesas
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'pedidos' %}active{% endif %}" href="{{ url_for('pedidos') }}">
+            <i class="bi bi-receipt"></i> Pedidos
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'detalles' %}active{% endif %}" href="{{ url_for('detalles') }}">
+            <i class="bi bi-list-ul"></i> Detalles
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- FLASH MESSAGES -->
+<div class="container mt-3">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ 'success' if category == 'success' else 'warning' }} alert-dismissible fade show">
+          <i class="bi bi-{{ 'check-circle' if category == 'success' else 'exclamation-triangle' }}"></i>
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+</div>
+
+<!-- CONTENIDO PRINCIPAL -->
+<main>
+  {% block content %}{% endblock %}
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <span>Ventorrillo Canario</span> &nbsp;·&nbsp; Sistema de gestión &nbsp;·&nbsp; {{ 2024 }}
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Scroll suave con IntersectionObserver
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('fade-in');
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.stat-card, .tabla-container, .form-card').forEach(el => {
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
+
+

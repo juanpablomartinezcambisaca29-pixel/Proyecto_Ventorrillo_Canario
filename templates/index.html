@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block title %}Inicio — Ventorrillo Canario{% endblock %}
+
+{% block content %}
+<!-- HERO -->
+<section class="hero-section">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <h1>Ventorrillo Canario</h1>
+    <p>Panel de gestión del restaurante</p>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="container mt-5">
+  <div class="row g-4">
+    <div class="col-6 col-md-3">
+      <div class="stat-card" style="animation-delay:0.1s">
+        <div class="stat-icon"><i class="bi bi-tag-fill"></i></div>
+        <div class="stat-number">{{ categorias }}</div>
+        <div class="stat-label">Categorías</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="stat-card" style="animation-delay:0.2s">
+        <div class="stat-icon"><i class="bi bi-egg-fried"></i></div>
+        <div class="stat-number">{{ platos }}</div>
+        <div class="stat-label">Platos</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="stat-card" style="animation-delay:0.3s">
+        <div class="stat-icon"><i class="bi bi-grid-3x3"></i></div>
+        <div class="stat-number">{{ mesas }}</div>
+        <div class="stat-label">Mesas</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="stat-card" style="animation-delay:0.4s">
+        <div class="stat-icon"><i class="bi bi-receipt"></i></div>
+        <div class="stat-number">{{ pedidos }}</div>
+        <div class="stat-label">Pedidos</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accesos rápidos -->
+  <div class="row g-3 mt-4">
+    <div class="col-12">
+      <h4 style="font-family:'Playfair Display',serif; margin-bottom:16px;">Acceso rápido</h4>
+    </div>
+    {% for nombre, icono, ruta in [
+      ('Categorías','tag','categorias'),
+      ('Platos','egg-fried','platos'),
+      ('Mesas','grid-3x3','mesas'),
+      ('Pedidos','receipt','pedidos'),
+      ('Detalles','list-ul','detalles')
+    ] %}
+    <div class="col-6 col-md-4 col-lg-2">
+      <a href="{{ url_for(ruta) }}" style="text-decoration:none;">
+        <div class="text-center p-3" style="border:1.5px solid #e8e6e1; border-radius:12px; transition:all 0.25s ease;" 
+             onmouseover="this.style.borderColor='#c8a96e';this.style.transform='translateY(-3px)'"
+             onmouseout="this.style.borderColor='#e8e6e1';this.style.transform='translateY(0)'">
+          <i class="bi bi-{{ icono }}" style="font-size:1.6rem; color:#c8a96e;"></i>
+          <div style="font-size:0.85rem; margin-top:6px; color:#1e1e1e; font-weight:500;">{{ nombre }}</div>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
+
+
